@@ -46,7 +46,7 @@ namespace Git.hub
         /// <param name="token">oauth2-token</param>
         public void setOAuth2Token(string token)
         {
-            _client.Authenticator = token != null ? new OAuth2AuthHelper(token) : null;
+            _client.Authenticator = token != null ? new OAuth2AuthorizationRequestHeaderAuthenticator(token, "bearer") : null;
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Git.hub
 
         /// <summary>
         /// Retrieves the current user.
-        /// 
+        ///
         /// Requires to be logged in (OAuth/User+Password).
         /// </summary>
         /// <returns>current user</returns>

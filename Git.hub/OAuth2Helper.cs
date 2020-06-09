@@ -17,7 +17,7 @@ namespace Git.hub
     {
         /// <summary>
         /// Requests a Github API token, given you received a code first, i.e. user allowed that.
-        /// 
+        ///
         /// See OAuth documentation for how to do that.
         /// Your App needs to be registered first.
         /// </summary>
@@ -41,22 +41,6 @@ namespace Git.hub
             if (response.Data != null)
                 return response.Data.AccessToken;
             return null;
-        }
-    }
-
-    /// <summary>
-    /// Github sure has some quirks.
-    /// 
-    /// (not even sure why) Using RestSharp's authenticators works on GET /user, but not GET /user/repos?
-    /// This basically works around that.
-    /// </summary>
-    class OAuth2AuthHelper : AuthenticatorBase
-    {
-        public OAuth2AuthHelper(string token) : base(token) { }
-
-        protected override Parameter GetAuthenticationParameter(string accessToken)
-        {
-            return new Parameter("Authorization", "bearer " + accessToken, ParameterType.HttpHeader);
         }
     }
 }
