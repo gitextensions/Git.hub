@@ -1,6 +1,7 @@
 ﻿using System;
 using RestSharp;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Git.hub
 {
@@ -87,6 +88,23 @@ namespace Git.hub
             request.AddUrlSegment("pull", Number.ToString());
 
             return _client.GetList<PullRequestCommit>(request);
+        }
+
+        /// <summary>
+        /// Retrieves diff data for all Commits associated with this pull request.
+        /// </summary>
+        /// <param name="diffUrl">URL for diff data to retrieve</param>
+        /// <returns><see cref="string"/> that contains diff data</returns>
+        public async Task<string> GetDiffData(string diffUrl)
+        {
+            if (string.IsNullOrEmpty(diffUrl))
+            {
+                throw new ArgumentException("Empty diff URL: ", nameof(diffUrl));
+            }
+
+            var request = new RestRequest(diffUrl);
+            var diffData = await _client.ExecuteGetAsync<string>(request);
+            return diffData.Content;
         }
 
         public Issue ToIssue()
