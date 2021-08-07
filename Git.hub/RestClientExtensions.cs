@@ -21,7 +21,9 @@
 
                 result.AddRange(pageResponse.Data);
 
+#pragma warning disable CS0618 // Type or member is obsolete
                 Parameter linkHeader = pageResponse.Headers.FirstOrDefault(i => string.Equals(i.Name, "Link", StringComparison.OrdinalIgnoreCase));
+#pragma warning restore CS0618 // Type or member is obsolete
                 if (linkHeader == null)
                     break;
 
