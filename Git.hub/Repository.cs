@@ -33,12 +33,6 @@ namespace Git.hub
         }
 
         /// <summary>
-        /// Read-only clone url
-        /// git://github.com/{user}/{repo}.git
-        /// </summary>
-        public string GitUrl { get; internal set; }
-
-        /// <summary>
         /// Read/Write clone url via SSH
         /// git@github.com/{user}/{repo.git}
         /// </summary>
