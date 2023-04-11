@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using RestSharp;
 
 namespace Git.hub.APIv2
@@ -33,7 +30,6 @@ namespace Git.hub.APIv2
                 Forks = Forks,
                 Private = Private,
 
-                GitUrl = string.Format("git://github.com/{0}/{1}.git", Owner, Name),
                 SshUrl = string.Format("git@github.com:{0}/{1}.git", Owner, Name),
                 CloneUrl = string.Format("https://github.com/{0}/{1}.git", Owner, Name),
                 Detailed = false,
