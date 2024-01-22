@@ -81,7 +81,7 @@ namespace Git.hub
         /// <returns></returns>
         public IReadOnlyList<PullRequestCommit> GetCommits()
         {
-            var request = new RestRequest("repos/{user}/{repo}/pulls/{pull}/commits");
+            RestRequest request = new("repos/{user}/{repo}/pulls/{pull}/commits");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("pull", Number.ToString());
@@ -89,38 +89,23 @@ namespace Git.hub
             return _client.GetList<PullRequestCommit>(request);
         }
 
-        public Issue ToIssue()
-        {
-            return new Issue { _client = _client, Repository = Repository, Number = Number };
-        }
+        public Issue ToIssue() => new() { _client = _client, Repository = Repository, Number = Number };
 
-        public IReadOnlyList<IssueComment> GetIssueComments()
-        {
-            return ToIssue().GetComments();
-        }
+        public IReadOnlyList<IssueComment> GetIssueComments() => ToIssue().GetComments();
 
-        public bool Open()
-        {
-            return UpdateState("open");
-        }
+        public bool Open() => UpdateState("open");
 
-        public bool Close()
-        {
-            return UpdateState("closed");
-        }
+        public bool Close() => UpdateState("closed");
 
         private bool UpdateState(string state)
         {
-            var request = new RestRequest("repos/{user}/{repo}/pulls/{pull}");
+            RestRequest request = new("repos/{user}/{repo}/pulls/{pull}");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("pull", Number.ToString());
 
             request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(new
-            {
-                state = state
-            });
+            request.AddJsonBody(new { state });
             return _client.Patch(request).StatusCode == System.Net.HttpStatusCode.OK;
         }
     }

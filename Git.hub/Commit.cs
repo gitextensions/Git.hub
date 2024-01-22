@@ -25,7 +25,7 @@ namespace Git.hub
         public List<Ref> Parents { get; private set; }
         public Commit Commit { get; private set; }
 
-        public string AuthorName { get { return Author == null ? Commit.Author.ToString() : Author.Login; } }
+        public string AuthorName => Author == null ? Commit.Author.ToString() : Author.Login;
     }
 
     public class CommitAuthor
@@ -38,15 +38,12 @@ namespace Git.hub
         {
             if (Name != null)
             {
-                if (Email != null)
-                    return string.Format("{0} <{1}>", Name, Email);
-                else
-                    return Name;
+                return Email != null ? $"{Name} <{Email}>" : Name;
             }
-            else if (Email != null)
-                return Email;
             else
-                return "";
+            {
+                return Email != null ? Email : "";
+            }
         }
     }
 

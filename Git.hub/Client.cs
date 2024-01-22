@@ -58,9 +58,9 @@ namespace Git.hub
             if (_client.Authenticator == null)
                 throw new ArgumentException("no authentication details");
 
-            var request = new RestRequest("/user/repos?type=all");
+            RestRequest request = new("/user/repos?type=all");
 
-            var repos = _client.GetList<Repository>(request);
+            List<Repository> repos = _client.GetList<Repository>(request);
             if (repos == null)
                 throw new Exception("Bad Credentials");
 
@@ -75,15 +75,15 @@ namespace Git.hub
         /// <returns>list of repositories</returns>
         public IReadOnlyList<Repository> getRepositories(string username)
         {
-            var request = new RestRequest("/users/{name}/repos")
+            IRestRequest request = new RestRequest("/users/{name}/repos")
                 .AddUrlSegment("name", username);
 
-            var list = _client.GetList<Repository>(request);
-            if (list == null)
+            List<Repository> repos = _client.GetList<Repository>(request);
+            if (repos == null)
                 throw new InvalidOperationException("User does not exist.");
 
-            list.ForEach(r => r._client = _client);
-            return list;
+            repos.ForEach(r => r._client = _client);
+            return repos;
         }
 
         /// <summary>
@@ -94,11 +94,11 @@ namespace Git.hub
         /// <returns>fetched repository</returns>
         public Repository getRepository(string username, string repositoryName)
         {
-            var request = new RestRequest("/repos/{name}/{repo}")
+            IRestRequest request = new RestRequest("/repos/{name}/{repo}")
                 .AddUrlSegment("name", username)
                 .AddUrlSegment("repo", repositoryName);
 
-            var repo = DoRequest<Repository>(request);
+            Repository repo = DoRequest<Repository>(request);
             if (repo == null)
                 return null;
 
@@ -114,14 +114,14 @@ namespace Git.hub
         /// <returns></returns>
         public IReadOnlyList<Repository> getOrganizationRepositories(string organization)
         {
-            var request = new RestRequest("/orgs/{org}/repos")
+            IRestRequest request = new RestRequest("/orgs/{org}/repos")
                 .AddUrlSegment("org", organization);
 
-            var list = _client.GetList<Repository>(request);
+            List<Repository> repos = _client.GetList<Repository>(request);
 
-            var org = new Organization { Login = organization };
-            list.ForEach(r => { r._client = _client; r.Organization = org; });
-            return list;
+            Organization org = new() { Login = organization };
+            repos.ForEach(r => { r._client = _client; r.Organization = org; });
+            return repos;
         }
 
         /// <summary>
@@ -135,9 +135,9 @@ namespace Git.hub
             if (_client.Authenticator == null)
                 throw new ArgumentException("no authentication details");
 
-            var request = new RestRequest("/user");
+            RestRequest request = new("/user");
 
-            var user = DoRequest<User>(request, false);
+            User user = DoRequest<User>(request, false);
 
             return user;
         }
@@ -149,9 +149,9 @@ namespace Git.hub
                 throw new ArgumentException("Empty username", nameof(userName));
             }
 
-            var request = new RestRequest($"/users/{userName}");
+            RestRequest request = new($"/users/{userName}");
 
-            var user = await _client.ExecuteGetAsync<User>(request);
+            IRestResponse<User> user = await _client.ExecuteGetAsync<User>(request);
             return user.Data;
         }
 
@@ -162,10 +162,10 @@ namespace Git.hub
         /// <returns>(limited) list of matching repositories</returns>
         public IReadOnlyList<Repository> searchRepositories(string query)
         {
-            var request = new RestRequest("/legacy/repos/search/{query}");
+            RestRequest request = new("/legacy/repos/search/{query}");
             request.AddUrlSegment("query", query);
 
-            var repos = DoRequest<APIv2.RepositoryListV2>(request);
+            APIv2.RepositoryListV2 repos = DoRequest<APIv2.RepositoryListV2>(request);
             if (repos?.Repositories == null)
             {
                 throw new Exception($"Could not search for {query}");
@@ -197,7 +197,7 @@ namespace Git.hub
 
         private T DoRequest<T>(IRestRequest request, bool throwOnError = true) where T : new()
         {
-            var response = _client.Get<T>(request);
+            IRestResponse<T> response = _client.Get<T>(request);
             if (response.IsSuccessful)
             {
                 return response.Data;

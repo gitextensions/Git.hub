@@ -1,63 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RestSharp.Serialization.Json;
+﻿using RestSharp.Serialization.Json;
 using RestSharp.Serializers;
 
 namespace Git.hub.util
 {
     class ReplacingJsonSerializer : ISerializer
     {
-        private JsonSerializer serializer = new JsonSerializer();
-        private string what;
-        private string with;
+        private JsonSerializer serializer = new();
+        private string _what;
+        private string _with;
 
         public ReplacingJsonSerializer(string what, string with)
         {
-            this.what = what;
-            this.with = with;
+            this._what = what;
+            this._with = with;
         }
 
         public string Serialize(object obj)
         {
-            return serializer.Serialize(obj).Replace(what, with);
+            return serializer.Serialize(obj).Replace(_what, _with);
         }
 
         public string ContentType
         {
-            get
-            {
-                return serializer.ContentType;
-            }
-            set
-            {
-                serializer.ContentType = value;
-            }
+            get => serializer.ContentType;
+            set => serializer.ContentType = value;
         }
 
         public string DateFormat
         {
-            get
-            {
-                return serializer.DateFormat;
-            }
-            set
-            {
-                serializer.DateFormat = value;
-            }
+            get => serializer.DateFormat;
+            set => serializer.DateFormat = value;
         }
 
         public string RootElement
         {
-            get
-            {
-                return serializer.RootElement;
-            }
-            set
-            {
-                serializer.RootElement = value;
-            }
+            get => serializer.RootElement;
+            set => serializer.RootElement = value;
         }
     }
 }
