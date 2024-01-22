@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text.RegularExpressions;
     using RestSharp;
@@ -16,6 +17,14 @@
             while (true)
             {
                 IRestResponse<List<T>> pageResponse = client.Get<List<T>>(request);
+
+                if (!pageResponse.IsSuccessful)
+                {
+                    var fullUrl = client.BuildUri(request);
+                    Trace.WriteLine($"GitHub request error ({fullUrl}): {pageResponse.StatusCode:D} ({pageResponse.StatusCode:G}) - {pageResponse.StatusDescription}");
+                    return null;
+                }
+
                 if (pageResponse.Data == null)
                     return null;
 
