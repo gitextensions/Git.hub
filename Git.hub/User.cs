@@ -16,20 +16,9 @@
         {
         }
 
-        public override bool Equals(object obj)
-        {
-            return GetHashCode() == obj.GetHashCode();
-        }
-
-        public override int GetHashCode()
-        {
-            return GetType().GetHashCode() + Login.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return Login;
-        }
+        public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
+        public override int GetHashCode() => GetType().GetHashCode() + Login.GetHashCode();
+        public override string ToString() => Login;
     }
 }
 

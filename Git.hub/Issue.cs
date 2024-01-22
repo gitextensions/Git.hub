@@ -21,7 +21,7 @@ namespace Git.hub
 
         public IReadOnlyList<IssueComment> GetComments()
         {
-            var request = new RestRequest("/repos/{user}/{repo}/issues/{issue}/comments");
+            RestRequest request = new("/repos/{user}/{repo}/issues/{issue}/comments");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("issue", Number.ToString());
@@ -34,15 +34,13 @@ namespace Git.hub
             if (_client.Authenticator == null)
                 throw new ArgumentException("no authentication details");
 
-            var request = new RestRequest("/repos/{user}/{repo}/issues/{issue}/comments");
+            RestRequest request = new("/repos/{user}/{repo}/issues/{issue}/comments");
             request.AddUrlSegment("user", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("issue", Number.ToString());
 
             request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(new {
-                body = body
-            });
+            request.AddJsonBody(new { body });
             return _client.Post<IssueComment>(request).Data;
         }
     }

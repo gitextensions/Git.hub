@@ -19,7 +19,7 @@ namespace Git.hub
             set
             {
                 _Client = value;
-                foreach (var entry in Tree)
+                foreach (GitHubTreeEntry entry in Tree)
                     entry._client = _Client;
             }
         }
@@ -35,7 +35,7 @@ namespace Git.hub
             internal set
             {
                 _Repository = value;
-                foreach (var entry in Tree)
+                foreach (GitHubTreeEntry entry in Tree)
                     entry.Repository = _Repository;
             }
         }
@@ -97,12 +97,12 @@ namespace Git.hub
         {
             Blob = new Lazy<GitHubBlob>(() =>
                {
-                   var request = new RestRequest("/repos/{owner}/{repo}/git/blobs/{sha}");
+                   RestRequest request = new("/repos/{owner}/{repo}/git/blobs/{sha}");
                    request.AddUrlSegment("owner", Repository.Owner.Login);
                    request.AddUrlSegment("repo", Repository.Name);
                    request.AddUrlSegment("sha", Sha);
 
-                   var ghBlob = _client.Get<GitHubBlob>(request).Data;
+                   GitHubBlob ghBlob = _client.Get<GitHubBlob>(request).Data;
                    if (ghBlob == null)
                        return null;
 
@@ -131,12 +131,12 @@ namespace Git.hub
 
         public Commit GetCommit()
         {
-            var request = new RestRequest("/repos/{owner}/{repo}/git/commits/{sha}");
+            RestRequest request = new("/repos/{owner}/{repo}/git/commits/{sha}");
             request.AddUrlSegment("owner", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
             request.AddUrlSegment("sha", Object.Sha);
 
-            var ghCommit = _client.Get<Commit>(request).Data;
+            Commit ghCommit = _client.Get<Commit>(request).Data;
             if (ghCommit == null)
                 return null;
 
@@ -147,13 +147,13 @@ namespace Git.hub
 
         public GitHubTree GetTree()
         {
-            var request = new RestRequest("/repos/{owner}/{repo}/git/trees/{sha}");
+            RestRequest request = new("/repos/{owner}/{repo}/git/trees/{sha}");
             request.AddUrlSegment("owner", Repository.Owner.Login);
             request.AddUrlSegment("repo", Repository.Name);
-            var commit = GetCommit();
+            Commit commit = GetCommit();
             request.AddUrlSegment("sha", commit.Tree.Sha);
 
-            var ghTree = _client.Get<GitHubTree>(request).Data;
+            GitHubTree ghTree = _client.Get<GitHubTree>(request).Data;
             if (ghTree == null)
                 return null;
 

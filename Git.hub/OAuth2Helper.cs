@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RestSharp;
-using RestSharp.Authenticators;
+﻿using RestSharp;
 
 namespace Git.hub
 {
     class OAuth2Data
     {
-        public string AccessToken { get;  private set; }
+        public string AccessToken { get; private set; }
         public string TokenType { get; private set; }
     }
 
@@ -28,16 +23,16 @@ namespace Git.hub
         public static string requestToken(string client_id, string client_secret, string code)
         {
             // Not on api.github.com
-            var client = new RestClient("https://github.com");
+            RestClient client = new("https://github.com");
             client.UserAgent = "mabako/Git.hub";
 
-            var request = new RestRequest("/login/oauth/access_token");
+            RestRequest request = new("/login/oauth/access_token");
             request.RequestFormat = DataFormat.Json;
             request.AddParameter("client_id", client_id);
             request.AddParameter("client_secret", client_secret);
             request.AddParameter("code", code);
 
-            var response = client.Post<OAuth2Data>(request);
+            IRestResponse<OAuth2Data> response = client.Post<OAuth2Data>(request);
             if (response.Data != null)
                 return response.Data.AccessToken;
             return null;
