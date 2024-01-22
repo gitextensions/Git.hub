@@ -174,6 +174,27 @@ namespace Git.hub
             return repos.Repositories.Select(r => r.ToV3(_client)).ToList();
         }
 
+        /// <summary>
+        /// Get the issues assigned to the authenticated user.
+        /// <see href="https://docs.github.com/fr/rest/issues/issues?apiVersion=2022-11-28#list-issues-assigned-to-the-authenticated-user">GitHub issue api</see>
+        /// </summary>
+        /// <param name="state">state of the issues returned. Choice: "open", "closed", "all"</param>
+        /// <param name="includePullRequests">true to include pull requests; otherwise, false.</param>
+        /// <returns>a list of issues assigned to the authenticated user.</returns>
+        public IReadOnlyList<Issue> GetAssignedIssues(string state = "open", bool includePullRequests = false)
+        {
+            var request = new RestRequest("/issues");
+            request.AddQueryParameter("state", state);
+            request.AddQueryParameter("filter", "assigned");
+            request.AddQueryParameter("pulls", includePullRequests ? "true" : "false");
+
+            List<Issue> issues = _client.GetList<Issue>(request);
+
+            issues?.ForEach(i => i._client = _client);
+
+            return issues;
+        }
+
         private T DoRequest<T>(IRestRequest request, bool throwOnError = true) where T : new()
         {
             var response = _client.Get<T>(request);

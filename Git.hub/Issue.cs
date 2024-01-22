@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using RestSharp;
 
 namespace Git.hub
 {
+    [DebuggerDisplay("{Number}:{Title}")]
     public class Issue
     {
-        public int Number;
-
         internal RestClient _client;
-        public Repository Repository { get; internal set; }
 
+        public int Number { get; internal set; }
+        public string Title { get; internal set; }
+        public string Body { get; internal set; }
+        public DateTime CreatedAt { get; internal set; }
+        public DateTime UpdatedAt { get; internal set; }
+        public string Url { get; internal set; }
+        public User User { get; internal set; }
+        public Repository Repository { get; internal set; }
 
         public List<IssueComment> GetComments()
         {
