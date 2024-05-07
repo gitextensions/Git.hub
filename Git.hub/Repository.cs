@@ -71,7 +71,7 @@ namespace Git.hub
         /// </summary>
         /// <remarks>Not really sure if that's even useful, mind the 'git branch'</remarks>
         /// <returns>list of all branches</returns>
-        public IList<Branch> GetBranches()
+        public IReadOnlyList<Branch> GetBranches()
         {
             RestRequest request = new RestRequest("/repos/{user}/{repo}/branches");
             request.AddUrlSegment("user", Owner.Login);
@@ -104,7 +104,7 @@ namespace Git.hub
         /// Lists all open pull requests
         /// </summary>
         /// <returns>list of all open pull requests</returns>
-        public IList<PullRequest> GetPullRequests()
+        public IReadOnlyList<PullRequest> GetPullRequests()
         {
             var request = new RestRequest("/repos/{user}/{repo}/pulls");
             request.AddUrlSegment("user", Owner.Login);

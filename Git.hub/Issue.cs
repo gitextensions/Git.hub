@@ -19,7 +19,7 @@ namespace Git.hub
         public User User { get; internal set; }
         public Repository Repository { get; internal set; }
 
-        public List<IssueComment> GetComments()
+        public IReadOnlyList<IssueComment> GetComments()
         {
             var request = new RestRequest("/repos/{user}/{repo}/issues/{issue}/comments");
             request.AddUrlSegment("user", Repository.Owner.Login);
