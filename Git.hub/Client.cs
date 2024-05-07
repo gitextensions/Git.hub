@@ -53,7 +53,7 @@ namespace Git.hub
         /// Lists all repositories for the logged in user
         /// </summary>
         /// <returns>list of repositories</returns>
-        public IList<Repository> getRepositories()
+        public IReadOnlyList<Repository> getRepositories()
         {
             if (_client.Authenticator == null)
                 throw new ArgumentException("no authentication details");
@@ -73,7 +73,7 @@ namespace Git.hub
         /// </summary>
         /// <param name="username">username</param>
         /// <returns>list of repositories</returns>
-        public IList<Repository> getRepositories(string username)
+        public IReadOnlyList<Repository> getRepositories(string username)
         {
             var request = new RestRequest("/users/{name}/repos")
                 .AddUrlSegment("name", username);
@@ -112,7 +112,7 @@ namespace Git.hub
         /// </summary>
         /// <param name="organization">name of the organization</param>
         /// <returns></returns>
-        public IList<Repository> getOrganizationRepositories(string organization)
+        public IReadOnlyList<Repository> getOrganizationRepositories(string organization)
         {
             var request = new RestRequest("/orgs/{org}/repos")
                 .AddUrlSegment("org", organization);
@@ -160,7 +160,7 @@ namespace Git.hub
         /// </summary>
         /// <param name="query">what to search for</param>
         /// <returns>(limited) list of matching repositories</returns>
-        public List<Repository> searchRepositories(string query)
+        public IReadOnlyList<Repository> searchRepositories(string query)
         {
             var request = new RestRequest("/legacy/repos/search/{query}");
             request.AddUrlSegment("query", query);

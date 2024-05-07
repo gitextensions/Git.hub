@@ -79,7 +79,7 @@ namespace Git.hub
         /// Retrieves all Commits associated with this pull request.
         /// </summary>
         /// <returns></returns>
-        public List<PullRequestCommit> GetCommits()
+        public IReadOnlyList<PullRequestCommit> GetCommits()
         {
             var request = new RestRequest("repos/{user}/{repo}/pulls/{pull}/commits");
             request.AddUrlSegment("user", Repository.Owner.Login);
@@ -94,7 +94,7 @@ namespace Git.hub
             return new Issue { _client = _client, Repository = Repository, Number = Number };
         }
 
-        public List<IssueComment> GetIssueComments()
+        public IReadOnlyList<IssueComment> GetIssueComments()
         {
             return ToIssue().GetComments();
         }
