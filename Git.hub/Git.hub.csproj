@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <NoWarn>$(NoWarn),1573,1591,1696,1712</NoWarn>
 
     <!-- TODO once all project migrated to SDK-style, remove this and move properties to Directory.Build.props -->
