@@ -47,7 +47,7 @@ namespace Git.hub
 
     public class IssueComment
     {
-        public int Id { get; private set; }
+        public long Id { get; private set; }
         public string Body { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
